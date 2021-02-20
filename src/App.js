@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Content from './components/Content';
+import Header from './components/partials/Header';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleAuth = user => {
+    console.log('Handling Authentication...');
+    if (user) {
+      // Sick add use stuff
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+    } else {
+      // Clear it all out
+      setCurrentUser(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem('jwtToken');
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* TODO Remove div, add styling more intentionally */}
+      <Header 
+        currentUser={currentUser} 
+        handleAuth={handleAuth} 
+      />
+      <Content 
+        currentUser={currentUser}
+        isAuthenticated={isAuthenticated}
+        handleAuth={handleAuth}
+      />
     </div>
   );
 }
